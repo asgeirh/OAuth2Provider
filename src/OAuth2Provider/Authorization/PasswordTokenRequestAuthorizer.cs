@@ -41,11 +41,8 @@ namespace OAuth2Provider.Authorization
                 throw new OAuthException(ErrorCode.InvalidClient, "User credentials are invalid");
 
             //Make sure resource owner is valid
-            var resourceOwner = _resourceOwnerRepository.GetByUsername(consumer.ConsumerId, request.Username);
+            var resourceOwner = _resourceOwnerRepository.GetByUsername(consumer.ConsumerId, request.Username, request.Password);
             if (resourceOwner == null)
-                throw new OAuthException(ErrorCode.InvalidClient, "User credentials are invalid");
-
-            if (resourceOwner.Password != request.Password.ToHash())
                 throw new OAuthException(ErrorCode.InvalidClient, "User credentials are invalid");
 
             //Make sure consumer is approved by resource owner
